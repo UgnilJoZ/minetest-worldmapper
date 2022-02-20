@@ -1,0 +1,10 @@
+version = 1
+background_color = "abcdef"
+transparent_nodes = false
+
+[node_colors]
+"default:stone" = "555555"
+"default:dirt_with_grass" = "00cc00"
+"default:leaves" = "008800"
+"default:dirt" = "772200"
+"default:water_source" = "002288"
