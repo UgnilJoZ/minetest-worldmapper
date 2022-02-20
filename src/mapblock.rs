@@ -118,6 +118,9 @@ pub fn render_map(map: &MapData, config: &Config) -> Result<RgbaImage, Box<dyn s
                 // An error here is noted, but the rendering continues
                 Err(e) => eprintln!("Error reading mapblock at {x},{y},{z}: {e}"),
             }
+            if !colordata.iter().any(|c| c.alpha() < 230) {
+                break;
+            }
         }
 
         let offset_x = (base_offset.0 + 16 * x) as u32;
