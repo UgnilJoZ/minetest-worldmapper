@@ -30,7 +30,6 @@ fn main() {
     let args = Args::parse();
     let config = fs::read_to_string(&args.config).unwrap();
     let config: Config = toml::from_str(&config).unwrap();
-    println!("{config:?}");
     let map = MapData::from_sqlite_file(args.sqlitefile).unwrap();
     let picture = render_map(&map, &config).unwrap();
     picture.save(&args.output).unwrap();

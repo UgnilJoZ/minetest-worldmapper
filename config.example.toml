@@ -1,10 +1,32 @@
 version = 1
 background_color = "abcdef"
-transparent_nodes = false
+transparent_nodes = true
 
 [node_colors]
-"default:stone" = "555555"
+"default:stone" = "777777"
 "default:dirt_with_grass" = "00cc00"
-"default:leaves" = "008800"
-"default:dirt" = "772200"
-"default:water_source" = "002288"
+"default:leaves" = "00880088"
+"default:dirt" = "772211"
+"default:water_source" = "00228888"
+"default:sand" = "ffe422"
+"default:snow" = "e8e8ffdd"
+"default:dirt_with_snow" = "ffffff"
+"default:jungleleaves" = "006600aa"
+"default:dirt_with_rainforest_litter" = "662200"
+"default:aspen_leaves" = "22884477"
+"flowers:tulip" = "cccc0088"
+"default:acacia_bush_leaves" = "338888"
+"default:desert_sand" = "eeaa22"
+"default:dry_dirt" = "bb8822"
+"default:dry_dirt_with_dry_grass" = "ccaa11"
+"default:acacia_leaves" = "33884488"
+"default:acacia_tree" = "996633"
+"default:dry_shrub" = "772200aa"
+"default:pine_needles" = "008822"
+"default:snowblock" = "e8e8ff"
+"default:permafrost_with_stones" = "555555"
+"default:permafrost_with_moss" = "2acc66"
+"default:gravel" = "888888"
+"default:clay" = "999999"
+"default:ice" = "e0e0ffaa"
+

@@ -14,11 +14,17 @@ impl Color {
     pub fn with_background(&self, other: &Color) -> Color {
         let fore_alpha = self.alpha() as f32 / 255.0;
         let back_alpha = 1.0 - fore_alpha;
+        if fore_alpha == 1.0 {
+            return *self;
+        }
+        if back_alpha == 1.0 {
+            return *other;
+        }
         let r = fore_alpha * (self.0[0] as f32) + back_alpha * (other.0[0] as f32);
         let g = fore_alpha * (self.0[1] as f32) + back_alpha * (other.0[1] as f32);
         let b = fore_alpha * (self.0[2] as f32) + back_alpha * (other.0[2] as f32);
         let a = fore_alpha + back_alpha * (other.alpha() as f32 / 255.0);
-        Color(Rgba::from([255 * r as u8, 255 * g as u8, 255 * b as u8, 255 * a as u8]))
+        Color(Rgba::from([r as u8, g as u8, b as u8, (255.0 * a) as u8]))
     }
 }
 
