@@ -1,8 +1,8 @@
 use crate::color::Color;
 use serde_derive::Deserialize;
-use std::collections::HashMap;
 #[cfg(feature = "smartstring")]
-use smartstring::{alias::String};
+use smartstring::alias::String;
+use std::collections::HashMap;
 
 #[derive(Deserialize, Debug)]
 pub struct Config {

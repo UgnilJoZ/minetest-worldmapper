@@ -5,7 +5,8 @@ use std::path::PathBuf;
 
 mod color;
 mod mapblock;
-use mapblock::render_map;
+mod render;
+use render::render_map;
 mod config;
 use config::Config;
 
