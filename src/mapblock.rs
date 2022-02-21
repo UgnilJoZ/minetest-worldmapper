@@ -5,6 +5,9 @@ use minetestworld::positions::modulo;
 use minetestworld::{MapBlock, MapData, Position};
 use std::collections::{BinaryHeap, HashMap};
 use std::ops::Range;
+#[cfg(feature = "smartstring")]
+use smartstring::alias::String;
+
 
 /// Sort all y values for all x,z mapblock position pairs
 ///

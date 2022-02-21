@@ -9,6 +9,9 @@ use mapblock::render_map;
 mod config;
 use config::Config;
 
+#[cfg(feature = "smartstr")]
+extern crate smartstring;
+
 /// Simple program to greet a person
 #[derive(Parser, Debug)]
 #[clap(author, version, about, long_about = None)]
@@ -27,6 +30,8 @@ struct Args {
 }
 
 fn main() {
+    #[cfg(feature = "smartstr")]
+    smartstring::validate();
     let args = Args::parse();
     let config = fs::read_to_string(&args.config).unwrap();
     let config: Config = toml::from_str(&config).unwrap();
