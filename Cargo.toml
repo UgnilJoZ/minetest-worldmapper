@@ -1,12 +1,10 @@
 [package]
-name = "minetestmapper"
+name = "minetest-worldmapper"
 version = "0.1.0"
 edition = "2021"
 
-# See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
-
 [dependencies]
-minetestworld = {path = "../libminetestworld"}
+minetestworld = "0.1"
 clap = {version = "3.1.0", features = ["derive"]}
 image = {version = "0.24", features = ["png"], default-features = false}
 toml = "0.5"
