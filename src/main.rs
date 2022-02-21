@@ -12,15 +12,15 @@ use config::Config;
 #[cfg(feature = "smartstr")]
 extern crate smartstring;
 
-/// Simple program to greet a person
+/// Render a minetest world into a map
 #[derive(Parser, Debug)]
 #[clap(author, version, about, long_about = None)]
 struct Args {
-    /// Name of the person to greet
+    /// World directory
     #[clap(short, long)]
     world: PathBuf,
 
-    /// config file
+    /// Config file
     #[clap(short, long)]
     config: PathBuf,
 
