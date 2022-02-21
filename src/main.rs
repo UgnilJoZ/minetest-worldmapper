@@ -1,5 +1,5 @@
 use clap::Parser;
-use minetestworld::MapData;
+use minetestworld::World;
 use std::fs;
 use std::path::PathBuf;
 
@@ -18,7 +18,7 @@ extern crate smartstring;
 struct Args {
     /// Name of the person to greet
     #[clap(short, long)]
-    sqlitefile: PathBuf,
+    world: PathBuf,
 
     /// config file
     #[clap(short, long)]
@@ -35,7 +35,8 @@ fn main() {
     let args = Args::parse();
     let config = fs::read_to_string(&args.config).unwrap();
     let config: Config = toml::from_str(&config).unwrap();
-    let map = MapData::from_sqlite_file(args.sqlitefile).unwrap();
+    let world = World::new(args.world);
+    let map = world.get_map().unwrap();
     let picture = render_map(&map, &config).unwrap();
     picture.save(&args.output).unwrap();
 }
