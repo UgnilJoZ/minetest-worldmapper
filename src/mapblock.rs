@@ -99,7 +99,7 @@ fn render_mapblock_data(
         let (mut x, mut y) = offset;
         x += modulo(i as u32, 16);
         y += 16 - i as u32 / 16;
-        *image.get_pixel_mut(x, y) = col.0;
+        *image.get_pixel_mut(x, y) = col.with_background(&config.background_color).0;
     }
 }
 
@@ -113,7 +113,6 @@ pub fn render_map(map: &MapData, config: &Config) -> Result<RgbaImage, Box<dyn s
     eprintln!("base offset: {base_offset:?}");
 
     for (&(x, z), ys) in xz_positions.iter_mut() {
-        //eprintln!("Processing x={x}, z={z} bar.");
         let mut colordata = [Color(Rgba::from([0; 4])); 256];
         while let Some(y) = ys.pop() {
             match map.get_mapblock(Position { x, y, z }) {

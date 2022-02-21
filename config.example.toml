@@ -1,5 +1,5 @@
 version = 1
-background_color = "abcdef"
+background_color = "ffffff00"
 transparent_nodes = true
 
 [node_colors]
