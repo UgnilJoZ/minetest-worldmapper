@@ -39,5 +39,6 @@ fn main() {
     let world = World::new(args.world);
     let map = world.get_map().unwrap();
     let picture = render_map(&map, &config).unwrap();
+    eprintln!("Saving image");
     picture.save(&args.output).unwrap();
 }
