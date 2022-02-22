@@ -72,11 +72,11 @@ pub fn render_map(map: &MapData, config: &Config) -> Result<RgbaImage, Box<dyn s
         let mut colordata = [Color(Rgba::from([0; 4])); 256];
         while let Some(y) = ys.pop() {
             match map.get_mapblock(Position { x, y, z }) {
-                Ok(mapblock) => compute_mapblock(&mapblock, &config.node_colors, &mut colordata),
+                Ok(mapblock) => compute_mapblock(&mapblock, config, &mut colordata),
                 // An error here is noted, but the rendering continues
                 Err(e) => eprintln!("Error reading mapblock at {x},{y},{z}: {e}"),
             }
-            if !colordata.iter().any(|c| c.alpha() < 230) {
+            if !colordata.iter().any(|c| c.alpha() < config.target_alpha) {
                 break;
             }
         }

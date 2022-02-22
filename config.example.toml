@@ -1,6 +1,7 @@
 version = 1
 background_color = "ffffff00"
 transparent_nodes = true
+target_alpha = 230
 
 [node_colors]
 "default:stone" = "777777"

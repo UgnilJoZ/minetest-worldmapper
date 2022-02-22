@@ -1,4 +1,5 @@
 use crate::color::Color;
+use crate::config::Config;
 use minetestworld::{MapBlock, Position};
 #[cfg(feature = "smartstring")]
 use smartstring::alias::String;
@@ -19,7 +20,7 @@ pub(crate) fn sorted_positions(positions: &[Position]) -> HashMap<(i16, i16), Bi
 
 pub(crate) fn compute_mapblock(
     mapblock: &MapBlock,
-    colours: &HashMap<String, Color>,
+    config: &Config,
     acc: &mut [Color; 256],
 ) {
     for z in 0..16 {
@@ -31,9 +32,9 @@ pub(crate) fn compute_mapblock(
 
             for y in (0..16).rev() {
                 let node = mapblock.get_node_at(x, y, z);
-                if let Some(colour) = colours.get(&node.param0) {
+                if let Some(colour) = config.node_colors.get(&node.param0) {
                     acc[index] = acc[index].with_background(colour);
-                    if acc[index].alpha() > 230 {
+                    if acc[index].alpha() > config.target_alpha {
                         continue;
                     }
                 }
