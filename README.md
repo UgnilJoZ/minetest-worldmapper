@@ -1,6 +1,6 @@
 # minetest-worldmapper
 
-A single-threaded mapper for Minetest with node transparency support.
+A multi-threaded mapper for Minetest with node transparency support.
 
 ## Example usage
 ```
