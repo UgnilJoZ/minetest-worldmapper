@@ -1,7 +1,7 @@
 use clap::Parser;
 use minetestworld::World;
-use std::fs;
-use std::path::PathBuf;
+use async_std::fs;
+use async_std::path::PathBuf;
 
 mod color;
 mod mapblock;
@@ -30,15 +30,16 @@ struct Args {
     output: PathBuf,
 }
 
-fn main() {
+#[async_std::main]
+async fn main() {
     #[cfg(feature = "smartstr")]
     smartstring::validate();
     let args = Args::parse();
-    let config = fs::read_to_string(&args.config).unwrap();
+    let config = fs::read_to_string(&args.config).await.unwrap();
     let config: Config = toml::from_str(&config).unwrap();
     let world = World::new(args.world);
-    let map = world.get_map().unwrap();
-    let picture = render_map(&map, &config).unwrap();
+    let map = world.get_map().await.unwrap();
+    let picture = render_map(map, config).await.unwrap();
     eprintln!("Saving image");
     picture.save(&args.output).unwrap();
 }
