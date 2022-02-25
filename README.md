@@ -19,7 +19,7 @@ Then, call the executable `target/release/minetest-worldmapper` with the three r
 |  Option  | Description                               |
 | -------- | ----------------------------------------- |
 | --world  | The directory of the world to render.     |
-| --config | The config file. The format should follow the [example config file][1]]. |
+| --config | The config file. The format should follow the [example config file][1]. |
 | --output | The image file which the map should be rendered to. |
 
 ### Example usage
