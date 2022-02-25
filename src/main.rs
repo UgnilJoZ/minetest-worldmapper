@@ -1,7 +1,7 @@
-use clap::Parser;
-use minetestworld::World;
 use async_std::fs;
 use async_std::path::PathBuf;
+use clap::Parser;
+use minetestworld::World;
 
 mod color;
 mod mapblock;

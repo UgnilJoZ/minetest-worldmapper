@@ -1,8 +1,6 @@
 use crate::color::Color;
 use crate::config::Config;
 use minetestworld::{MapBlock, Position};
-#[cfg(feature = "smartstring")]
-use smartstring::alias::String;
 use std::collections::{BinaryHeap, HashMap};
 
 /// Sort all y values for all x,z mapblock position pairs
@@ -18,11 +16,7 @@ pub(crate) fn sorted_positions(positions: &[Position]) -> HashMap<(i16, i16), Bi
     result
 }
 
-pub(crate) fn compute_mapblock(
-    mapblock: &MapBlock,
-    config: &Config,
-    acc: &mut [Color; 256],
-) {
+pub(crate) fn compute_mapblock(mapblock: &MapBlock, config: &Config, acc: &mut [Color; 256]) {
     for z in 0..16 {
         for x in 0..16 {
             let index = (x + 16 * z) as usize;
