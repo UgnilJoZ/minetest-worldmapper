@@ -8,7 +8,6 @@ use std::collections::HashMap;
 pub struct Config {
     pub version: u16,
     pub background_color: Color,
-    pub transparent_nodes: bool,
     /// Which opacity is considered enough to
     /// continue with the next pixel
     #[serde(default = "default_target_alpha")]
