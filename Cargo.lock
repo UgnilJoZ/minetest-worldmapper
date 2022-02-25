@@ -1090,14 +1090,13 @@ dependencies = [
 
 [[package]]
 name = "minetest-worldmapper"
-version = "0.2.0"
+version = "0.2.1"
 dependencies = [
  "async-std",
  "clap 3.1.2",
  "futures",
  "image",
  "minetestworld",
- "rayon",
  "serde",
  "serde_derive",
  "smartstring",
@@ -1106,9 +1105,9 @@ dependencies = [
 
 [[package]]
 name = "minetestworld"
-version = "0.2.0"
+version = "0.2.1"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "2126a369fae1a2873e26c4bd8a32d2c38a0161b33b28b59a8dea5c488f154297"
+checksum = "787bfff57e3e50667aeb96c8971c9bc87a67e3cedd1cf44a1415e3345d65275d"
 dependencies = [
  "async-std",
  "futures",

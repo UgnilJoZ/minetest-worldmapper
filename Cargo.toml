@@ -12,7 +12,6 @@ image = {version = "0.24", default-features = false}
 toml = "0.5"
 serde_derive = "1.0"
 serde = "1.0"
-rayon = "1"
 
 [target.'cfg(not(all(target_endian = "big", target_pointer_width = "32")))'.dependencies]
 smartstring = {version = "0.2", features = ["serde"], optional = true}
