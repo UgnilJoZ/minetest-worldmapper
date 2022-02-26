@@ -16,11 +16,11 @@ cargo build --release
 
 Then, call the executable `target/release/minetest-worldmapper` with the three required arguments:
 
-|  Option  | Description                               |
-| -------- | ----------------------------------------- |
-| --world  | The directory of the world to render.     |
-| --config | The config file. The format should follow the [example config file][1]. |
-| --output | The image file which the map should be rendered to. |
+|  Option  | Short | Description                               |
+| -------- | ----- | ----------------------------------------- |
+| --world  | -w    | The directory of the world to render.     |
+| --config | -c    | The config file. The format should follow the [example config file][1]. |
+| --output | -o    | The image file which the map should be rendered to. |
 
 ### Example usage
 ```bash
@@ -28,11 +28,11 @@ minetest-worldmapper --world TestWorld/ --config config.example.toml --output ma
 ```
 
 ### Config file
-If a voxel is rendered and its color is entirely determined by [config file][1]. Its main purpose is to map content IDs to colors.
+If a voxel is rendered and its color are entirely determined by the [config file][1]. Its main purpose is to map content IDs to colors.
 
-| Config option      | Type         | Description         |
-| ------------------ | ------------ | ------------------- |
-| `version`          | [Integer][2] | Currently always 1. |
+| Config option      | Type         | Description                         |
+| ------------------ | ------------ | ----------------------------------- |
+| `version`          | [Integer][2] | Config version. Currently always 1. |
 | `background_color` | [String][3]  | Hex color string in the format "rrggbb" or "rrggbbaa". Serves as a fallback color if all voxels for a given pixel are exhausted and there is transparency left. |
 | `target_alpha`     | [Integer][2] | When determining a pixel's color, stop going through transparent nodes when reaching this opacity value. Between 0 and 255. |
 | `node_colors`      | [Table][4]  | A mapping from content names to color strings in the same format as `background_color`. |

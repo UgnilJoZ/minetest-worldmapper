@@ -86,7 +86,7 @@ pub async fn render_map(
                     // An error here is noted, but the rendering continues
                     Err(e) => eprintln!("Error reading mapblock at {x},{y},{z}: {e}"),
                 }
-                if !chunk.iter().any(|c| c.alpha() < config.target_alpha) {
+                if chunk.iter().all(|c| c.alpha() > config.target_alpha) {
                     break;
                 }
             }
