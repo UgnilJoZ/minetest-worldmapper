@@ -37,6 +37,11 @@ If a voxel is rendered and its color are entirely determined by the [config file
 | `target_alpha`     | [Integer][2] | When determining a pixel's color, stop going through transparent nodes when reaching this opacity value. Between 0 and 255. |
 | `node_colors`      | [Table][4]  | A mapping from content names to color strings in the same format as `background_color`. |
 
+## Current limits
+* Only sqlite3 is supported as backend.
+* Only map chunks with map format version 29 (the current) are supported.
+* No hillshading feature yet.
+
 ## Example pictures
 ![Zoomed in](https://user-images.githubusercontent.com/7910828/154993848-744bd8f6-782e-4048-8f8d-3871e53cdc0a.png)
 ![Big map](https://user-images.githubusercontent.com/7910828/154993962-51475253-4eed-4d5a-8427-694949423a9d.png)

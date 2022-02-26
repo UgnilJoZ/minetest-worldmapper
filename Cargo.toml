@@ -31,3 +31,5 @@ avif = ["image/avif"]
 
 [profile.release]
 lto = true
+opt-level = 3
+strip = true
