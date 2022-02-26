@@ -3,10 +3,13 @@ use crate::{
     Config,
 };
 use async_std::task;
+use futures::future::join_all;
 use image::{Rgba, RgbaImage};
 use minetestworld::MAPBLOCK_LENGTH;
 use minetestworld::{positions::modulo, MapData, Position};
+use std::error::Error;
 use std::ops::Range;
+use std::sync::Arc;
 
 #[derive(Debug)]
 pub struct Bbox {
@@ -64,10 +67,7 @@ fn render_mapblock_data(
     }
 }
 
-pub async fn render_map(
-    map: MapData,
-    config: Config,
-) -> Result<RgbaImage, Box<dyn std::error::Error>> {
+pub async fn render_map(map: MapData, config: Config) -> Result<RgbaImage, Box<dyn Error>> {
     let mapblock_positions = map.all_mapblock_positions().await?;
     let mut xz_positions = sorted_positions(&mapblock_positions);
     let bbox = bounding_box(&mapblock_positions).unwrap_or(Bbox { x: 0..0, z: 0..0 });
@@ -82,9 +82,9 @@ pub async fn render_map(
     );
     eprintln!("base offset: {base_offset:?}");
 
-    let config = std::sync::Arc::new(config);
-    let map = std::sync::Arc::new(map);
-    let mut chunks = futures::future::join_all(xz_positions.drain().map(|((x, z), ys)| {
+    let config = Arc::new(config);
+    let map = Arc::new(map);
+    let mut chunks = join_all(xz_positions.drain().map(|((x, z), ys)| {
         let config = config.clone();
         let map = map.clone();
         task::spawn(async move {
