@@ -20,6 +20,9 @@ pub(crate) fn sorted_positions(positions: &[Position]) -> HashMap<(i16, i16), Bi
 }
 
 pub(crate) fn compute_mapblock(mapblock: &MapBlock, config: &Config, acc: &mut [Color; CHUNK_SIZE]) {
+    if mapblock.name_id_mappings.values().eq([b"air"]) {
+        return;
+    }
     for z in 0..MAPBLOCK_LENGTH {
         for x in 0..MAPBLOCK_LENGTH {
             let index = (x + MAPBLOCK_LENGTH * z) as usize;
