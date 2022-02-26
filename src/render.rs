@@ -1,8 +1,10 @@
-use crate::{color::Color, mapblock::compute_mapblock, mapblock::sorted_positions, Config};
+use crate::{color::Color, mapblock::compute_mapblock, mapblock::sorted_positions, Config, mapblock::CHUNK_SIZE};
 use async_std::task;
 use image::{Rgba, RgbaImage};
 use minetestworld::{positions::modulo, MapData, Position};
+use minetestworld::MAPBLOCK_LENGTH;
 use std::ops::Range;
+
 
 #[derive(Debug)]
 pub struct Bbox {
@@ -47,15 +49,15 @@ pub fn bounding_box(positions: &[Position]) -> Option<Bbox> {
 }
 
 fn render_mapblock_data(
-    data: &[Color; 256],
+    data: &[Color; CHUNK_SIZE],
     config: &Config,
     image: &mut RgbaImage,
     offset: (u32, u32),
 ) {
     for (i, col) in data.iter().enumerate() {
         let (mut x, mut y) = offset;
-        x += modulo(i as u32, 16);
-        y += 16 - i as u32 / 16;
+        x += modulo(i as u32, MAPBLOCK_LENGTH as u32);
+        y += MAPBLOCK_LENGTH as u32 - i as u32 / MAPBLOCK_LENGTH as u32;
         *image.get_pixel_mut(x, y) = col.with_background(&config.background_color).0;
     }
 }
@@ -68,8 +70,8 @@ pub async fn render_map(
     let mut xz_positions = sorted_positions(&mapblock_positions);
     let bbox = bounding_box(&mapblock_positions).unwrap_or(Bbox { x: 0..0, z: 0..0 });
     eprintln!("{bbox:?}");
-    let mut imgbuf = RgbaImage::new(16 * bbox.x.len() as u32, 16 * bbox.z.len() as u32 + 1);
-    let base_offset = (-bbox.x.start * 16, bbox.z.end * 16);
+    let mut imgbuf = RgbaImage::new(MAPBLOCK_LENGTH as u32 * bbox.x.len() as u32, MAPBLOCK_LENGTH as u32 * bbox.z.len() as u32 + 1);
+    let base_offset = (-bbox.x.start * MAPBLOCK_LENGTH as i16, bbox.z.end * MAPBLOCK_LENGTH as i16);
     eprintln!("base offset: {base_offset:?}");
 
     let config = std::sync::Arc::new(config);
@@ -78,7 +80,7 @@ pub async fn render_map(
         let config = config.clone();
         let map = map.clone();
         task::spawn(async move {
-            let mut chunk = [Color(Rgba::from([0; 4])); 256];
+            let mut chunk = [Color(Rgba::from([0; 4])); CHUNK_SIZE];
             let mut ys = ys.clone();
             while let Some(y) = ys.pop() {
                 match map.clone().get_mapblock(Position { x, y, z }).await {
@@ -97,8 +99,8 @@ pub async fn render_map(
 
     eprintln!("Writing image");
     for (x, z, chunk) in chunks.drain(..) {
-        let offset_x = (base_offset.0 + 16 * x) as u32;
-        let offset_z = (base_offset.1 - 16 * (z + 1)) as u32;
+        let offset_x = (base_offset.0 + MAPBLOCK_LENGTH as i16 * x) as u32;
+        let offset_z = (base_offset.1 - MAPBLOCK_LENGTH as i16 * (z + 1)) as u32;
         render_mapblock_data(&chunk, &config, &mut imgbuf, (offset_x, offset_z));
     }
     Ok(imgbuf)

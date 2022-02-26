@@ -2,6 +2,9 @@ use crate::color::Color;
 use crate::config::Config;
 use minetestworld::{MapBlock, Position};
 use std::collections::{BinaryHeap, HashMap};
+use minetestworld::MAPBLOCK_LENGTH;
+
+pub const CHUNK_SIZE: usize = MAPBLOCK_LENGTH as usize * MAPBLOCK_LENGTH as usize;
 
 /// Sort all y values for all x,z mapblock position pairs
 ///
@@ -16,15 +19,15 @@ pub(crate) fn sorted_positions(positions: &[Position]) -> HashMap<(i16, i16), Bi
     result
 }
 
-pub(crate) fn compute_mapblock(mapblock: &MapBlock, config: &Config, acc: &mut [Color; 256]) {
-    for z in 0..16 {
-        for x in 0..16 {
-            let index = (x + 16 * z) as usize;
+pub(crate) fn compute_mapblock(mapblock: &MapBlock, config: &Config, acc: &mut [Color; CHUNK_SIZE]) {
+    for z in 0..MAPBLOCK_LENGTH {
+        for x in 0..MAPBLOCK_LENGTH {
+            let index = (x + MAPBLOCK_LENGTH * z) as usize;
             if acc[index].alpha() > 230 {
                 continue;
             }
 
-            for y in (0..16).rev() {
+            for y in (0..MAPBLOCK_LENGTH).rev() {
                 let node = mapblock.get_node_at(x, y, z);
                 if let Some(colour) = config.node_colors.get(&node.param0) {
                     acc[index] = acc[index].with_background(colour);
