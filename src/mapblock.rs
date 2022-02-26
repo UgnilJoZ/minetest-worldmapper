@@ -1,8 +1,8 @@
 use crate::color::Color;
 use crate::config::Config;
+use minetestworld::MAPBLOCK_LENGTH;
 use minetestworld::{MapBlock, Position};
 use std::collections::{BinaryHeap, HashMap};
-use minetestworld::MAPBLOCK_LENGTH;
 
 pub const CHUNK_SIZE: usize = MAPBLOCK_LENGTH as usize * MAPBLOCK_LENGTH as usize;
 
@@ -19,7 +19,11 @@ pub(crate) fn sorted_positions(positions: &[Position]) -> HashMap<(i16, i16), Bi
     result
 }
 
-pub(crate) fn compute_mapblock(mapblock: &MapBlock, config: &Config, acc: &mut [Color; CHUNK_SIZE]) {
+pub(crate) fn compute_mapblock(
+    mapblock: &MapBlock,
+    config: &Config,
+    acc: &mut [Color; CHUNK_SIZE],
+) {
     if mapblock.name_id_mappings.values().eq([b"air"]) {
         return;
     }

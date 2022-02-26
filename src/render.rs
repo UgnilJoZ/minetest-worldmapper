@@ -1,10 +1,12 @@
-use crate::{color::Color, mapblock::compute_mapblock, mapblock::sorted_positions, Config, mapblock::CHUNK_SIZE};
+use crate::{
+    color::Color, mapblock::compute_mapblock, mapblock::sorted_positions, mapblock::CHUNK_SIZE,
+    Config,
+};
 use async_std::task;
 use image::{Rgba, RgbaImage};
-use minetestworld::{positions::modulo, MapData, Position};
 use minetestworld::MAPBLOCK_LENGTH;
+use minetestworld::{positions::modulo, MapData, Position};
 use std::ops::Range;
-
 
 #[derive(Debug)]
 pub struct Bbox {
@@ -70,8 +72,14 @@ pub async fn render_map(
     let mut xz_positions = sorted_positions(&mapblock_positions);
     let bbox = bounding_box(&mapblock_positions).unwrap_or(Bbox { x: 0..0, z: 0..0 });
     eprintln!("{bbox:?}");
-    let mut imgbuf = RgbaImage::new(MAPBLOCK_LENGTH as u32 * bbox.x.len() as u32, MAPBLOCK_LENGTH as u32 * bbox.z.len() as u32 + 1);
-    let base_offset = (-bbox.x.start * MAPBLOCK_LENGTH as i16, bbox.z.end * MAPBLOCK_LENGTH as i16);
+    let mut imgbuf = RgbaImage::new(
+        MAPBLOCK_LENGTH as u32 * bbox.x.len() as u32,
+        MAPBLOCK_LENGTH as u32 * bbox.z.len() as u32 + 1,
+    );
+    let base_offset = (
+        -bbox.x.start * MAPBLOCK_LENGTH as i16,
+        bbox.z.end * MAPBLOCK_LENGTH as i16,
+    );
     eprintln!("base offset: {base_offset:?}");
 
     let config = std::sync::Arc::new(config);

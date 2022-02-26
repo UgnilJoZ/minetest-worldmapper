@@ -10,9 +10,6 @@ use render::render_map;
 mod config;
 use config::Config;
 
-#[cfg(feature = "smartstr")]
-extern crate smartstring;
-
 /// Render a minetest world into a map
 #[derive(Parser, Debug)]
 #[clap(author, version, about, long_about = None)]
@@ -32,8 +29,6 @@ struct Args {
 
 #[async_std::main]
 async fn main() {
-    #[cfg(feature = "smartstr")]
-    smartstring::validate();
     let args = Args::parse();
     let config = fs::read_to_string(&args.config).await.unwrap();
     let config: Config = toml::from_str(&config).unwrap();
