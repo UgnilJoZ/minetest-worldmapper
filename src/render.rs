@@ -80,7 +80,6 @@ pub async fn render_map(map: MapData, config: Config) -> Result<RgbaImage, Box<d
         -bbox.x.start * MAPBLOCK_LENGTH as i16,
         bbox.z.end * MAPBLOCK_LENGTH as i16,
     );
-    eprintln!("base offset: {base_offset:?}");
 
     let config = Arc::new(config);
     let map = Arc::new(map);
