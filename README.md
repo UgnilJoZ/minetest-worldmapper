@@ -5,7 +5,7 @@ A multi-threaded mapper for Minetest with node transparency support.
 It generates a view of the world from above, rendering one pixel per voxel.
 
 [![Crates.io](https://img.shields.io/crates/v/minetest-worldmapper.svg)](https://crates.io/crates/minetest-worldmapper)
-[![Dependency Status](https://deps.rs/crate/minetest-worldmapper/0.2.1/status.svg)](https://deps.rs/crate/minetest-worldmapper/0.2.1)
+[![Dependency Status](https://deps.rs/crate/minetest-worldmapper/0.2.3/status.svg)](https://deps.rs/crate/minetest-worldmapper/0.2.3)
 
 ## Usage
 First, compile the project with cargo:
