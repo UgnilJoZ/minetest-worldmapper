@@ -30,11 +30,13 @@ struct Args {
 #[async_std::main]
 async fn main() {
     let args = Args::parse();
-    let config = fs::read_to_string(&args.config).await.unwrap();
-    let config: Config = toml::from_str(&config).unwrap();
+    let config = fs::read_to_string(&args.config)
+        .await
+        .expect("reading config");
+    let config: Config = toml::from_str(&config).expect("parsing config");
     let world = World::new(args.world);
-    let map = world.get_map().await.unwrap();
-    let picture = render_map(map, config).await.unwrap();
+    let map = world.get_map_data().await.expect("opening world data");
+    let picture = render_map(map, config).await.expect("rendering map");
     eprintln!("Saving image");
-    picture.save(&args.output).unwrap();
+    picture.save(&args.output).expect("saving image");
 }
