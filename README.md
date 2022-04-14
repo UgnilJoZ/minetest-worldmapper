@@ -39,7 +39,7 @@ If a voxel is rendered and its color are entirely determined by the config file.
 | `node_colors`      | [Table][5]  | A mapping from content names to color strings in the same format as `background_color`. |
 
 ## Current limitations
-* Only sqlite3 and Redis are supported as backend.
+* LevelDB is not supported as backend.
 * Only map chunks with map format version 29 (the current) are supported.
 * No hillshading feature yet.
 
