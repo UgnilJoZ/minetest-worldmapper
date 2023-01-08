@@ -90,12 +90,12 @@ pub async fn render_map(map: MapData, config: Config) -> Result<RgbaImage, Box<d
             let mut chunk = [Color(Rgba::from([0; 4])); CHUNK_SIZE];
             let mut ys = ys.clone();
             while let Some(y) = ys.pop() {
-                match map.clone().get_mapblock(Position { x, y, z }).await {
+                match map.get_mapblock(Position { x, y, z }).await {
                     Ok(mapblock) => compute_mapblock(&mapblock, &config, &mut chunk),
                     // An error here is noted, but the rendering continues
                     Err(e) => eprintln!("Error reading mapblock at {x},{y},{z}: {e}"),
                 }
-                if chunk.iter().all(|c| c.alpha() > config.target_alpha) {
+                if chunk.iter().all(|c| c.alpha() > config.sufficient_alpha) {
                     break;
                 }
             }

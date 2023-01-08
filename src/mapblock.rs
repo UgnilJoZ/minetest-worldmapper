@@ -38,7 +38,7 @@ pub(crate) fn compute_mapblock(
                 let node = mapblock.get_node_at(x, y, z);
                 if let Some(colour) = config.node_colors.get(&node.param0) {
                     acc[index] = acc[index].with_background(colour);
-                    if acc[index].alpha() > config.target_alpha {
+                    if acc[index].alpha() > config.sufficient_alpha {
                         continue;
                     }
                 }

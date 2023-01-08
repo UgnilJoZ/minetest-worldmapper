@@ -35,7 +35,7 @@ If a voxel is rendered and its color are entirely determined by the config file.
 | ------------------ | ------------ | ----------------------------------- |
 | `version`          | [Integer][3] | Config version. Currently always 1. |
 | `background_color` | [String][4]  | Hex color string in the format "rrggbb" or "rrggbbaa". Serves as a fallback color if all voxels for a given pixel are exhausted and there is transparency left. |
-| `target_alpha`     | [Integer][3] | When determining a pixel's color, stop going through transparent nodes when reaching this opacity value. Between 0 and 255. |
+| `sufficient_alpha` | [Integer][3] | When determining a pixel's color, stop going through transparent nodes when reaching this opacity value. Between 0 and 255. |
 | `node_colors`      | [Table][5]  | A mapping from content names to color strings in the same format as `background_color`. |
 
 ## Current limitations

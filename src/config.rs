@@ -8,11 +8,11 @@ pub struct Config {
     pub background_color: Color,
     /// Which opacity is considered enough to
     /// continue with the next pixel
-    #[serde(default = "default_target_alpha")]
-    pub target_alpha: u8,
+    #[serde(default = "default_sufficient_alpha")]
+    pub sufficient_alpha: u8,
     pub node_colors: HashMap<String, Color>,
 }
 
-const fn default_target_alpha() -> u8 {
+const fn default_sufficient_alpha() -> u8 {
     230
 }
