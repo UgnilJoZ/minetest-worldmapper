@@ -6,9 +6,10 @@ use minetestworld::World;
 mod color;
 mod mapblock;
 mod render;
-use render::render_map;
+use render::compute_terrain;
 mod config;
 use config::Config;
+mod terrain;
 
 /// Render a minetest world into a map
 #[derive(Parser, Debug)]
@@ -36,7 +37,8 @@ async fn main() {
     let config: Config = toml::from_str(&config).expect("parsing config");
     let world = World::new(args.world);
     let map = world.get_map_data().await.expect("opening world data");
-    let picture = render_map(map, config).await.expect("rendering map");
+    let terrain_map = compute_terrain(map, &config).await.expect("rendering map");
+    let picture = terrain_map.render(&config);
     eprintln!("Saving image");
     picture.save(&args.output).expect("saving image");
 }

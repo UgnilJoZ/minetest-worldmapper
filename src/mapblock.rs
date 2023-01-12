@@ -1,5 +1,6 @@
 use crate::color::Color;
 use crate::config::Config;
+use crate::terrain::TerrainCell;
 use minetestworld::MAPBLOCK_LENGTH;
 use minetestworld::{MapBlock, Position};
 use std::collections::{BinaryHeap, HashMap};
@@ -22,7 +23,8 @@ pub(crate) fn sorted_positions(positions: &[Position]) -> HashMap<(i16, i16), Bi
 pub(crate) fn compute_mapblock(
     mapblock: &MapBlock,
     config: &Config,
-    acc: &mut [Color; CHUNK_SIZE],
+    //base_height: i16,
+    acc: &mut [TerrainCell; CHUNK_SIZE],
 ) {
     if mapblock.name_id_mappings.values().eq([b"air"]) {
         return;
@@ -36,8 +38,8 @@ pub(crate) fn compute_mapblock(
 
             for y in (0..MAPBLOCK_LENGTH).rev() {
                 let node = mapblock.get_node_at(x, y, z);
-                if let Some(colour) = config.node_colors.get(&node.param0) {
-                    acc[index] = acc[index].with_background(colour);
+                if let Some(color) = config.node_colors.get(&node.param0) {
+                    acc[index].add_background(color.clone());
                     if acc[index].alpha() > config.sufficient_alpha {
                         continue;
                     }

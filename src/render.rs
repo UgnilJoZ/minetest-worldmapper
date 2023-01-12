@@ -1,6 +1,6 @@
 use crate::{
     color::Color, mapblock::compute_mapblock, mapblock::sorted_positions, mapblock::CHUNK_SIZE,
-    Config,
+    Config, terrain::Terrain, terrain::TerrainCell
 };
 use async_std::task;
 use futures::future::join_all;
@@ -67,27 +67,27 @@ fn render_mapblock_data(
     }
 }
 
-pub async fn render_map(map: MapData, config: Config) -> Result<RgbaImage, Box<dyn Error>> {
+pub async fn compute_terrain(map: MapData, config: &Config) -> Result<Terrain, Box<dyn Error>> {
     let mapblock_positions = map.all_mapblock_positions().await?;
     let mut xz_positions = sorted_positions(&mapblock_positions);
     let bbox = bounding_box(&mapblock_positions).unwrap_or(Bbox { x: 0..0, z: 0..0 });
     eprintln!("{bbox:?}");
-    let mut imgbuf = RgbaImage::new(
-        MAPBLOCK_LENGTH as u32 * bbox.x.len() as u32,
-        MAPBLOCK_LENGTH as u32 * bbox.z.len() as u32 + 1,
+    let mut terrain = Terrain::new(
+        MAPBLOCK_LENGTH as usize * bbox.x.len(),
+        MAPBLOCK_LENGTH as usize * bbox.z.len() + 1,
     );
     let base_offset = (
         -bbox.x.start * MAPBLOCK_LENGTH as i16,
         bbox.z.end * MAPBLOCK_LENGTH as i16,
     );
 
-    let config = Arc::new(config);
+    let config = Arc::new(config.clone());
     let map = Arc::new(map);
     let mut chunks = join_all(xz_positions.drain().map(|((x, z), ys)| {
         let config = config.clone();
         let map = map.clone();
         task::spawn(async move {
-            let mut chunk = [Color(Rgba::from([0; 4])); CHUNK_SIZE];
+            let mut chunk = [TerrainCell::default(); CHUNK_SIZE];
             let mut ys = ys.clone();
             while let Some(y) = ys.pop() {
                 match map.get_mapblock(Position { x, y, z }).await {
@@ -104,11 +104,32 @@ pub async fn render_map(map: MapData, config: Config) -> Result<RgbaImage, Box<d
     }))
     .await;
 
-    eprintln!("Writing image");
+    eprintln!("Finishing surface map");
     for (x, z, chunk) in chunks.drain(..) {
         let offset_x = (base_offset.0 + MAPBLOCK_LENGTH as i16 * x) as u32;
         let offset_z = (base_offset.1 - MAPBLOCK_LENGTH as i16 * (z + 1)) as u32;
-        render_mapblock_data(&chunk, &config, &mut imgbuf, (offset_x, offset_z));
+        terrain.insert_chunk((offset_x, offset_z), chunk)
     }
-    Ok(imgbuf)
+    Ok(terrain)
+}
+
+impl Terrain {
+    fn hillshade_foreground(&self, x: u32, y: u32) -> Color {
+        let x_diff = self.height_diff_x(x, y).unwrap_or(0);
+        let y_diff = self.height_diff_y(x, y).unwrap_or(0);
+        Color(Rgba([0,0,0,0]))
+    }
+
+    pub fn render(&self, config: &Config) -> RgbaImage {
+        let mut image = RgbaImage::new(self.width().try_into().expect("width has to fit into u32"), self.height().try_into().expect("height has to fit into u32"));
+        for y in 0..self.height() {
+            let y = y as u32;
+            for x in 0..self.width() {
+            let x = x as u32;
+                let col = self.get_color(x, y).unwrap_or(config.background_color);
+                *image.get_pixel_mut(x, y) = col.with_background(&config.background_color).0;
+            }
+        }
+        image
+    }
 }

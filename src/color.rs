@@ -6,6 +6,12 @@ use std::fmt;
 #[derive(Clone, Copy, Debug)]
 pub struct Color(pub Rgba<u8>);
 
+impl Default for Color {
+    fn default() -> Self {
+        Color(Rgba([0,0,0,0]))
+    }
+}
+
 impl Color {
     pub fn alpha(&self) -> u8 {
         self.0[3]
