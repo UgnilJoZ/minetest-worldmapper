@@ -23,7 +23,7 @@ pub(crate) fn sorted_positions(positions: &[Position]) -> HashMap<(i16, i16), Bi
 pub(crate) fn compute_mapblock(
     mapblock: &MapBlock,
     config: &Config,
-    //base_height: i16,
+    base_height: i16,
     acc: &mut [TerrainCell; CHUNK_SIZE],
 ) {
     if mapblock.name_id_mappings.values().eq([b"air"]) {
@@ -40,6 +40,9 @@ pub(crate) fn compute_mapblock(
                 let node = mapblock.get_node_at(x, y, z);
                 if let Some(color) = config.node_colors.get(&node.param0) {
                     acc[index].add_background(color.clone());
+                    if config.hill_shading.enabled && acc[index].alpha() > config.hill_shading.min_alpha {
+                        acc[index].set_height(base_height + y as i16);
+                    }
                     if acc[index].alpha() > config.sufficient_alpha {
                         continue;
                     }

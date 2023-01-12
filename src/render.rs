@@ -67,6 +67,7 @@ fn render_mapblock_data(
     }
 }
 
+/// Renders the surface color of the terrain along with its heightmap
 pub async fn compute_terrain(map: MapData, config: &Config) -> Result<Terrain, Box<dyn Error>> {
     let mapblock_positions = map.all_mapblock_positions().await?;
     let mut xz_positions = sorted_positions(&mapblock_positions);
@@ -91,7 +92,7 @@ pub async fn compute_terrain(map: MapData, config: &Config) -> Result<Terrain, B
             let mut ys = ys.clone();
             while let Some(y) = ys.pop() {
                 match map.get_mapblock(Position { x, y, z }).await {
-                    Ok(mapblock) => compute_mapblock(&mapblock, &config, &mut chunk),
+                    Ok(mapblock) => compute_mapblock(&mapblock, &config, y * MAPBLOCK_LENGTH as i16, &mut chunk),
                     // An error here is noted, but the rendering continues
                     Err(e) => eprintln!("Error reading mapblock at {x},{y},{z}: {e}"),
                 }
@@ -113,11 +114,22 @@ pub async fn compute_terrain(map: MapData, config: &Config) -> Result<Terrain, B
     Ok(terrain)
 }
 
+fn shade(color: &mut Color, height_diff: i16) {
+    if height_diff < 0 {
+        let descent: u8 = (-height_diff).try_into().unwrap_or(255);
+        color.darken(descent);
+    }
+    if height_diff > 0 {
+        let ascent: u8 = height_diff.try_into().unwrap_or(255);
+        color.lighten_up(ascent);
+    }
+}
+
 impl Terrain {
-    fn hillshade_foreground(&self, x: u32, y: u32) -> Color {
+    fn heightdiff(&self, x: u32, y: u32) -> i16 {
         let x_diff = self.height_diff_x(x, y).unwrap_or(0);
         let y_diff = self.height_diff_y(x, y).unwrap_or(0);
-        Color(Rgba([0,0,0,0]))
+        x_diff + y_diff
     }
 
     pub fn render(&self, config: &Config) -> RgbaImage {
@@ -126,7 +138,10 @@ impl Terrain {
             let y = y as u32;
             for x in 0..self.width() {
             let x = x as u32;
-                let col = self.get_color(x, y).unwrap_or(config.background_color);
+                let mut col = self.get_color(x, y).unwrap_or(config.background_color);
+                if config.hill_shading.enabled {
+                    shade(&mut col, self.heightdiff(x, y));
+                }
                 *image.get_pixel_mut(x, y) = col.with_background(&config.background_color).0;
             }
         }

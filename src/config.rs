@@ -5,16 +5,16 @@ use std::collections::HashMap;
 #[derive(Deserialize, Debug, Clone)]
 pub struct HillShading {
     #[serde(default)]
-    pub on: bool,
-    #[serde(default = "default_surface_density")]
-    pub surface_density: u8,
+    pub enabled: bool,
+    #[serde(default = "default_terrain_min_alpha")]
+    pub min_alpha: u8,
 }
 
 impl Default for HillShading {
     fn default() -> Self {
         HillShading {
-            on: false,
-            surface_density: default_surface_density(),
+            enabled: false,
+            min_alpha: default_terrain_min_alpha(),
         }
     }
 }
@@ -36,7 +36,7 @@ const fn default_sufficient_alpha() -> u8 {
     230
 }
 
-const fn default_surface_density() -> u8 {
+const fn default_terrain_min_alpha() -> u8 {
     128
 }
 

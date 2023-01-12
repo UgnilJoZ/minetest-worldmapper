@@ -1,4 +1,4 @@
-use image::Rgba;
+use image::{Rgba, Pixel};
 use serde::de::{self, Unexpected, Visitor};
 use serde::{Deserialize, Deserializer};
 use std::fmt;
@@ -30,6 +30,14 @@ impl Color {
         let b = fore_alpha * (self.0[2] as f32) + back_alpha * (other.0[2] as f32);
         let a = fore_alpha + back_alpha * (other.alpha() as f32 / 255.0);
         Color(Rgba::from([r as u8, g as u8, b as u8, (255.0 * a) as u8]))
+    }
+
+    pub fn lighten_up(&mut self, by: u8) {
+        self.0.apply_without_alpha(|c| c.saturating_add(by))
+    }
+
+    pub fn darken(&mut self, by: u8) {
+        self.0.apply_without_alpha(|c| c.saturating_sub(by))
     }
 }
 

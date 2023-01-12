@@ -2,6 +2,8 @@ version = 1
 background_color = "ffffff00"
 target_alpha = 230
 
+hill_shading.enabled = true
+
 [node_colors]
 "default:stone" = "777777"
 "default:dirt_with_grass" = "00cc00"
