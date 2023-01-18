@@ -9,7 +9,7 @@ description = "Minetest world mapper"
 
 
 [dependencies]
-minetestworld = { version = "0.5.1", path = "../minetestworld" }
+minetestworld = "0.5.1"
 async-std = "1"
 futures = "0.3"
 clap = {version = "3.1.0", features = ["derive"]}

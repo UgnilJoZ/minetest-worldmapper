@@ -1240,6 +1240,8 @@ dependencies = [
 [[package]]
 name = "minetestworld"
 version = "0.5.1"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "66906a9350ac93b7e6addc65d67cf8e699799f4ff7db1dc986c854ffab0d331a"
 dependencies = [
  "async-std",
  "futures",
