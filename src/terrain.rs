@@ -51,7 +51,9 @@ impl Terrain {
 
     /// Panics if out of bounds
     fn get_cell_mut(&mut self, x: u32, y: u32) -> &mut TerrainCell {
-        self.flat_data.get_mut(y as usize * self.width + x as usize).unwrap()
+        self.flat_data
+            .get_mut(y as usize * self.width + x as usize)
+            .unwrap()
     }
 
     pub fn get_color(&self, x: u32, y: u32) -> Option<Color> {
@@ -63,11 +65,7 @@ impl Terrain {
     }
 
     /// Panics if out of bounds
-    pub fn insert_chunk(
-        &mut self,
-        offset: (u32, u32),
-        chunk: [TerrainCell; CHUNK_SIZE]
-    ) {
+    pub fn insert_chunk(&mut self, offset: (u32, u32), chunk: [TerrainCell; CHUNK_SIZE]) {
         for (i, cell) in chunk.into_iter().enumerate() {
             let (mut x, mut y) = offset;
             x += i as u32 % MAPBLOCK_LENGTH as u32;
@@ -77,9 +75,11 @@ impl Terrain {
     }
 
     pub fn height_diff_x(&self, x: u32, y: u32) -> Option<i16> {
-        let a = self.get_cell(x.saturating_sub(1), y).or_else(|| self.get_cell(x, y))?;
+        let a = self
+            .get_cell(x.saturating_sub(1), y)
+            .or_else(|| self.get_cell(x, y))?;
         let this_cell = self.get_cell(x, y)?.height?;
-        let b = self.get_cell(x+1, y).or_else(|| self.get_cell(x, y))?;
+        let b = self.get_cell(x + 1, y).or_else(|| self.get_cell(x, y))?;
         let mut ascent = b.height? - this_cell;
         ensure_nonnegative(&mut ascent);
         let mut descent = a.height? - this_cell;
@@ -88,9 +88,11 @@ impl Terrain {
     }
 
     pub fn height_diff_y(&self, x: u32, y: u32) -> Option<i16> {
-        let a = self.get_cell(x, y.saturating_sub(1)).or_else(|| self.get_cell(x, y))?;
+        let a = self
+            .get_cell(x, y.saturating_sub(1))
+            .or_else(|| self.get_cell(x, y))?;
         let this_cell = self.get_cell(x, y)?.height?;
-        let b = self.get_cell(x, y+1).or_else(|| self.get_cell(x, y))?;
+        let b = self.get_cell(x, y + 1).or_else(|| self.get_cell(x, y))?;
         let mut ascent = b.height? - this_cell;
         ensure_nonnegative(&mut ascent);
         let mut descent = a.height? - this_cell;

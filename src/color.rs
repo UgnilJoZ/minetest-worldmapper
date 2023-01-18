@@ -1,4 +1,4 @@
-use image::{Rgba, Pixel};
+use image::{Pixel, Rgba};
 use serde::de::{self, Unexpected, Visitor};
 use serde::{Deserialize, Deserializer};
 use std::fmt;
@@ -8,7 +8,7 @@ pub struct Color(pub Rgba<u8>);
 
 impl Default for Color {
     fn default() -> Self {
-        Color(Rgba([0,0,0,0]))
+        Color(Rgba([0, 0, 0, 0]))
     }
 }
 
@@ -57,7 +57,7 @@ impl<'de> Visitor<'de> for ColorVisitor {
     where
         E: de::Error,
     {
-        let valid = ((s.len() == 6) || (s.len() == 8)) && s.chars().all(|c| c.is_digit(16));
+        let valid = ((s.len() == 6) || (s.len() == 8)) && s.chars().all(|c| c.is_ascii_hexdigit());
         if valid {
             // We ruled out a ParseIntError above, so can call unwrap
             let r = u8::from_str_radix(&s[0..2], 16).unwrap();

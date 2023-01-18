@@ -40,3 +40,10 @@ const fn default_terrain_min_alpha() -> u8 {
     128
 }
 
+impl Config {
+    pub fn get_color(&self, itemstring: &[u8]) -> Option<&Color> {
+        String::from_utf8(itemstring.to_vec())
+            .ok()
+            .and_then(|key| self.node_colors.get(&key))
+    }
+}
