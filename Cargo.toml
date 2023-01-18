@@ -17,6 +17,9 @@ image = {version = "0.24", default-features = false}
 toml = "0.5"
 serde_derive = "1.0"
 serde = "1.0"
+log = "0.4"
+pretty_env_logger = "0.4"
+log_err = "1.1"
 
 [features]
 default = ["png", "bmp"]

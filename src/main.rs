@@ -2,6 +2,7 @@ use async_std::fs;
 use async_std::path::PathBuf;
 use clap::Parser;
 use minetestworld::World;
+use log_err::LogErrResult;
 
 mod color;
 mod mapblock;
@@ -30,15 +31,16 @@ struct Args {
 
 #[async_std::main]
 async fn main() {
+    pretty_env_logger::init();
     let args = Args::parse();
     let config = fs::read_to_string(&args.config)
         .await
-        .expect("reading config");
-    let config: Config = toml::from_str(&config).expect("parsing config");
+        .log_expect("reading config");
+    let config: Config = toml::from_str(&config).log_expect("parsing config");
     let world = World::new(args.world);
-    let map = world.get_map_data().await.expect("opening world data");
-    let terrain_map = compute_terrain(map, &config).await.expect("rendering map");
+    let map = world.get_map_data().await.log_expect("opening world data");
+    let terrain_map = compute_terrain(map, &config).await.log_expect("rendering map");
     let picture = terrain_map.render(&config);
-    eprintln!("Saving image");
-    picture.save(&args.output).expect("saving image");
+    log::info!("Saving image");
+    picture.save(&args.output).log_expect("saving image");
 }

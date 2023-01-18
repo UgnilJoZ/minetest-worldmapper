@@ -72,7 +72,7 @@ pub async fn compute_terrain(map: MapData, config: &Config) -> Result<Terrain, B
     let mapblock_positions = map.all_mapblock_positions().await?;
     let mut xz_positions = sorted_positions(&mapblock_positions);
     let bbox = bounding_box(&mapblock_positions).unwrap_or(Bbox { x: 0..0, z: 0..0 });
-    eprintln!("{bbox:?}");
+    log::info!("{bbox:?}");
     let mut terrain = Terrain::new(
         MAPBLOCK_LENGTH as usize * bbox.x.len(),
         MAPBLOCK_LENGTH as usize * bbox.z.len() + 1,
@@ -94,7 +94,7 @@ pub async fn compute_terrain(map: MapData, config: &Config) -> Result<Terrain, B
                 match map.get_mapblock(Position { x, y, z }).await {
                     Ok(mapblock) => compute_mapblock(&mapblock, &config, y * MAPBLOCK_LENGTH as i16, &mut chunk),
                     // An error here is noted, but the rendering continues
-                    Err(e) => eprintln!("Error reading mapblock at {x},{y},{z}: {e}"),
+                    Err(e) => log::info!("Error reading mapblock at {x},{y},{z}: {e}"),
                 }
                 if chunk.iter().all(|c| c.alpha() > config.sufficient_alpha) {
                     break;
@@ -105,7 +105,7 @@ pub async fn compute_terrain(map: MapData, config: &Config) -> Result<Terrain, B
     }))
     .await;
 
-    eprintln!("Finishing surface map");
+    log::info!("Finishing surface map");
     for (x, z, chunk) in chunks.drain(..) {
         let offset_x = (base_offset.0 + MAPBLOCK_LENGTH as i16 * x) as u32;
         let offset_z = (base_offset.1 - MAPBLOCK_LENGTH as i16 * (z + 1)) as u32;
