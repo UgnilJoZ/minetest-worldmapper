@@ -45,7 +45,8 @@ RUST_LOG=debug minetest-worldmapper --world TestWorld/ --config config.example.t
 ```
 
 ### Config file
-If a voxel is rendered and its color are entirely determined by the config file. An [example config file][2] is part of this repo. Its main purpose is to map the voxel content to colors.
+If a voxel is rendered and its color are entirely determined by the config file, which is based on TOML.
+An [example config file][2] is part of this repo. Its main purpose is to map the voxel content to colors.
 
 | Config option           | Type         | Description                         |
 | ----------------------- | ------------ | ----------------------------------- |
@@ -53,7 +54,15 @@ If a voxel is rendered and its color are entirely determined by the config file.
 | `background_color`      | [String][4]  | Hex color string; either in the format "rrggbb" (full opacity) or "rrggbbaa" (color with alpha value). Serves as a fallback color if all voxels for a given pixel are exhausted and there is transparency left. |
 | `hillshading.enabled`   | [Boolean][3] | (optional, defaults to `true`) Enables terrain relief visualisation. |
 | `hillshading.min_alpha` | [Integer][6] | (optional, defaults to `128`) At which alpha value a node counts as "terrain" |
-| `node_colors`           | [Table][5]   | Maps content names to color strings (which have the same format as `background_color`). Every node not listed here is treated like air. |
+| `node_colors`           | [Table][5]   | Maps node [itemstrings][7] to color strings (which have the same format as `background_color`). Every node not listed here is treated like air. |
+
+#### Minimal config example
+```toml
+background_color = "888888"
+
+[node_colors]
+"default:water_source" = "00228888"
+```
 
 ## Current limitations
 * LevelDB is not supported as backend.
@@ -69,3 +78,4 @@ The crate [minetestworld](https://github.com/UgnilJoZ/rust-minetestworld/) is th
 [4]: https://toml.io/en/v1.0.0#string
 [5]: https://toml.io/en/v1.0.0#table
 [6]: https://toml.io/en/v1.0.0#boolean
+[7]: https://wiki.minetest.net/Itemstrings
