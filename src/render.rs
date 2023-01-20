@@ -1,20 +1,43 @@
 use crate::{
-    color::Color, mapblock::analyze_positions, mapblock::compute_mapblock, mapblock::Bbox,
-    mapblock::CHUNK_SIZE, terrain::Terrain, terrain::TerrainCell, Config,
+    color::Color, mapblock::analyze_positions, mapblock::compute_mapblock, mapblock::CHUNK_SIZE,
+    terrain::Terrain, terrain::TerrainCell, Config,
 };
 use async_std::task;
 use futures::future::join_all;
 use image::RgbaImage;
 use minetestworld::MAPBLOCK_LENGTH;
 use minetestworld::{MapData, Position};
+use std::collections::BinaryHeap;
 use std::error::Error;
 use std::sync::Arc;
 
-/// Renders the surface color of the terrain along with its heightmap
+async fn generate_terrain_chunk(
+    config: Arc<Config>,
+    map: Arc<MapData>,
+    x: i16,
+    z: i16,
+    mut ys: BinaryHeap<i16>,
+) -> (i16, i16, [TerrainCell; CHUNK_SIZE]) {
+    let mut chunk = [TerrainCell::default(); CHUNK_SIZE];
+    while let Some(y) = ys.pop() {
+        match map.get_mapblock(Position { x, y, z }).await {
+            Ok(mapblock) => {
+                compute_mapblock(&mapblock, &config, y * MAPBLOCK_LENGTH as i16, &mut chunk)
+            }
+            // An error here is noted, but the rendering continues
+            Err(e) => log::error!("Error reading mapblock at {x},{y},{z}: {e}"),
+        }
+        if chunk.iter().all(|c| c.alpha() > config.sufficient_alpha) {
+            break;
+        }
+    }
+    (x, z, chunk)
+}
+
+/// Renders the surface colors of the terrain along with its heightmap
 pub async fn compute_terrain(map: MapData, config: &Config) -> Result<Terrain, Box<dyn Error>> {
     let mapblock_positions = map.all_mapblock_positions().await;
     let (mut xz_positions, bbox) = analyze_positions(mapblock_positions).await?;
-    let bbox = bbox.unwrap_or(Bbox { x: 0..0, z: 0..0 });
     log::info!("{bbox:?}");
     let mut terrain = Terrain::new(
         MAPBLOCK_LENGTH as usize * bbox.x.len(),
@@ -30,23 +53,7 @@ pub async fn compute_terrain(map: MapData, config: &Config) -> Result<Terrain, B
     let mut chunks = join_all(xz_positions.drain().map(|((x, z), ys)| {
         let config = config.clone();
         let map = map.clone();
-        task::spawn(async move {
-            let mut chunk = [TerrainCell::default(); CHUNK_SIZE];
-            let mut ys = ys.clone();
-            while let Some(y) = ys.pop() {
-                match map.get_mapblock(Position { x, y, z }).await {
-                    Ok(mapblock) => {
-                        compute_mapblock(&mapblock, &config, y * MAPBLOCK_LENGTH as i16, &mut chunk)
-                    }
-                    // An error here is noted, but the rendering continues
-                    Err(e) => log::error!("Error reading mapblock at {x},{y},{z}: {e}"),
-                }
-                if chunk.iter().all(|c| c.alpha() > config.sufficient_alpha) {
-                    break;
-                }
-            }
-            (x, z, chunk)
-        })
+        task::spawn(generate_terrain_chunk(config, map, x, z, ys))
     }))
     .await;
 

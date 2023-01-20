@@ -40,9 +40,7 @@ type SortedPositions = HashMap<(i16, i16), BinaryHeap<i16>>;
 /// Analyzes the given position stream and returns its Bbox and SortedPosition
 ///
 /// Takes a stream that yields Result<Position, _>.
-pub(crate) async fn analyze_positions<S, E>(
-    mut positions: S,
-) -> Result<(SortedPositions, Option<Bbox>), E>
+pub(crate) async fn analyze_positions<S, E>(mut positions: S) -> Result<(SortedPositions, Bbox), E>
 where
     S: Stream<Item = Result<Position, E>> + Unpin,
 {
@@ -56,7 +54,10 @@ where
         let y_stack = sorted_positions.entry(key).or_insert_with(BinaryHeap::new);
         y_stack.push(pos.y);
     }
-    Ok((sorted_positions, Bbox::from_opt_ranges(x_range, z_range)))
+    Ok((
+        sorted_positions,
+        Bbox::from_opt_ranges(x_range, z_range).unwrap_or(Bbox { x: 0..0, z: 0..0 }),
+    ))
 }
 
 pub(crate) fn compute_mapblock(
