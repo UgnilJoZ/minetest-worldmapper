@@ -41,8 +41,8 @@ async fn main() {
     let map = world.get_map_data().await.log_expect("opening world data");
     let terrain_map = compute_terrain(map, &config)
         .await
-        .log_expect("rendering map");
-    let picture = terrain_map.render(&config);
+        .log_expect("generating terrain map");
+    let picture = terrain_map.render(&config).log_expect("rendering map");
     log::info!("Saving image");
     picture.save(&args.output).log_expect("saving image");
 }

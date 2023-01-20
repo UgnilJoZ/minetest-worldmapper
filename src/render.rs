@@ -39,7 +39,7 @@ pub async fn compute_terrain(map: MapData, config: &Config) -> Result<Terrain, B
                         compute_mapblock(&mapblock, &config, y * MAPBLOCK_LENGTH as i16, &mut chunk)
                     }
                     // An error here is noted, but the rendering continues
-                    Err(e) => log::info!("Error reading mapblock at {x},{y},{z}: {e}"),
+                    Err(e) => log::error!("Error reading mapblock at {x},{y},{z}: {e}"),
                 }
                 if chunk.iter().all(|c| c.alpha() > config.sufficient_alpha) {
                     break;
@@ -57,6 +57,14 @@ pub async fn compute_terrain(map: MapData, config: &Config) -> Result<Terrain, B
         terrain.insert_chunk((offset_x, offset_z), chunk)
     }
     Ok(terrain)
+}
+
+#[derive(thiserror::Error, Debug)]
+pub enum RenderingError {
+    #[error("width has to fit into u32")]
+    WidthTooBig(std::num::TryFromIntError),
+    #[error("height has to fit into u32")]
+    HeightTooBig(std::num::TryFromIntError),
 }
 
 fn shade(color: &mut Color, height_diff: i16) {
@@ -77,12 +85,14 @@ impl Terrain {
         x_diff + y_diff
     }
 
-    pub fn render(&self, config: &Config) -> RgbaImage {
+    pub fn render(&self, config: &Config) -> Result<RgbaImage, RenderingError> {
         let mut image = RgbaImage::new(
-            self.width().try_into().expect("width has to fit into u32"),
+            self.width()
+                .try_into()
+                .map_err(RenderingError::WidthTooBig)?,
             self.height()
                 .try_into()
-                .expect("height has to fit into u32"),
+                .map_err(RenderingError::HeightTooBig)?,
         );
         for y in 0..self.height() {
             let y = y as u32;
@@ -95,6 +105,6 @@ impl Terrain {
                 *image.get_pixel_mut(x, y) = col.with_background(&config.background_color).0;
             }
         }
-        image
+        Ok(image)
     }
 }
