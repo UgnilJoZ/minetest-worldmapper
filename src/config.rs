@@ -4,8 +4,9 @@ use std::collections::HashMap;
 
 #[derive(Deserialize, Debug, Clone)]
 pub struct HillShading {
-    #[serde(default)]
+    #[serde(default = "default_hillshading_enabled")]
     pub enabled: bool,
+    /// Which alpha a node has to has to be considered terrain
     #[serde(default = "default_terrain_min_alpha")]
     pub min_alpha: u8,
 }
@@ -13,7 +14,7 @@ pub struct HillShading {
 impl Default for HillShading {
     fn default() -> Self {
         HillShading {
-            enabled: false,
+            enabled: default_hillshading_enabled(),
             min_alpha: default_terrain_min_alpha(),
         }
     }
@@ -21,12 +22,12 @@ impl Default for HillShading {
 
 #[derive(Deserialize, Debug, Clone)]
 pub struct Config {
-    pub version: u16,
-    pub background_color: Color,
     /// Which opacity is considered enough to
     /// continue with the next pixel
     #[serde(default = "default_sufficient_alpha")]
     pub sufficient_alpha: u8,
+    /// Which color to place after reaching `sufficient_alpha`
+    pub background_color: Color,
     pub node_colors: HashMap<String, Color>,
     #[serde(default)]
     pub hill_shading: HillShading,
@@ -38,6 +39,10 @@ const fn default_sufficient_alpha() -> u8 {
 
 const fn default_terrain_min_alpha() -> u8 {
     128
+}
+
+const fn default_hillshading_enabled() -> bool {
+    true
 }
 
 impl Config {
