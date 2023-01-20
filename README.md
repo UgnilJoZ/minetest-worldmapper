@@ -8,7 +8,11 @@ A multi-threaded mapper for Minetest with node transparency support.
 
 It generates a view of the world from above, rendering one pixel per voxel.
 
-This project is only tested on Linux. If you have Windows and it doesn't work, please file a bug report.
+This project is currently tested on Linux only. If you have Windows and it doesn't work, please file a [bug report](https://github.com/UgnilJoZ/minetest-worldmapper/issues). But if you have another OS and it does not work, please report also a bug.
+
+## [Example picture](https://github.com/UgnilJoZ/minetest-worldmapper/wiki/Images)
+![Zoomed in](https://user-images.githubusercontent.com/7910828/213735727-8a414eaa-9f0b-4fa6-be28-72ef843db08a.png)
+![Big map](https://user-images.githubusercontent.com/7910828/213735504-565507f6-1140-4ebd-904f-2f37a3d1a1db.png)
 
 ## Usage
 First, compile the project with cargo:
@@ -16,6 +20,8 @@ First, compile the project with cargo:
 ```bash
 cargo build --release
 ```
+
+### Command-line arguments
 
 Then, call the executable `target/release/minetest-worldmapper` with the three required arguments:
 
@@ -25,9 +31,17 @@ Then, call the executable `target/release/minetest-worldmapper` with the three r
 | --config | -c    | The config file. The format should follow the [config format][1]. |
 | --output | -o    | The image file which the map should be rendered to. |
 
+### Logging
+Via the [`RUST_LOG`](https://docs.rs/env_logger/latest/env_logger/#enabling-logging) environment variable, you can choose one out of the log levels `trace`, `debug`, `info`, `warn`, and `error`. The default is `error`.
+
 ### Example usage
 ```bash
 minetest-worldmapper --world TestWorld/ --config config.example.toml --output map.png
+```
+
+### Example usage with logging
+```bash
+RUST_LOG=debug minetest-worldmapper --world TestWorld/ --config config.example.toml --output map.png
 ```
 
 ### Config file
@@ -45,9 +59,6 @@ If a voxel is rendered and its color are entirely determined by the config file.
 * LevelDB is not supported as backend.
 * Only map chunks with map format version 29 (the current) are supported.
 
-## Example pictures
-![Zoomed in](https://user-images.githubusercontent.com/7910828/154993848-744bd8f6-782e-4048-8f8d-3871e53cdc0a.png)
-![Big map](https://user-images.githubusercontent.com/7910828/154993962-51475253-4eed-4d5a-8427-694949423a9d.png)
 
 ## Reading Minetest worlds with Rust
 The crate [minetestworld](https://github.com/UgnilJoZ/rust-minetestworld/) is the basis for this renderer.
