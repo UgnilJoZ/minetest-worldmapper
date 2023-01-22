@@ -72,7 +72,7 @@ impl Terrain {
         for (i, cell) in chunk.into_iter().enumerate() {
             let (mut x, mut y) = offset;
             x += i as u32 % MAPBLOCK_LENGTH as u32;
-            y += MAPBLOCK_LENGTH as u32 - i as u32 / MAPBLOCK_LENGTH as u32;
+            y += MAPBLOCK_LENGTH as u32 - i as u32 / MAPBLOCK_LENGTH as u32 - 1;
             *self.get_cell_mut(x, y) = cell;
         }
     }
