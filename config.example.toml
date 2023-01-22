@@ -1,5 +1,5 @@
 background_color = "ffffff00"
-sufficient_alpha = 230
+sufficient_alpha = 253
 
 [hill_shading]
 enabled = true
