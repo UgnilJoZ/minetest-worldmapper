@@ -76,12 +76,12 @@ pub enum RenderingError {
 
 fn shade(color: &mut Color, height_diff: i16) {
     if height_diff < 0 {
-        let descent: u8 = (-height_diff).try_into().unwrap_or(255);
-        color.darken(descent);
+        let descent: u8 = (-height_diff).try_into().unwrap_or(0);
+        color.darken(descent.saturating_mul(2));
     }
     if height_diff > 0 {
-        let ascent: u8 = height_diff.try_into().unwrap_or(255);
-        color.lighten_up(ascent);
+        let ascent: u8 = height_diff.try_into().unwrap_or(0);
+        color.lighten_up(ascent.saturating_mul(2));
     }
 }
 

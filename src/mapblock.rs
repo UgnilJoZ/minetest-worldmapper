@@ -86,7 +86,8 @@ pub(crate) fn compute_mapblock(
                         acc[index].set_height(base_height + y as i16);
                     }
                     if acc[index].alpha() > config.sufficient_alpha {
-                        continue;
+                        acc[index].set_height(base_height + y as i16);
+                        break;
                     }
                 }
             }

@@ -21,8 +21,11 @@ impl TerrainCell {
         self.ground_color = Some(new_color);
     }
 
+    /// Sets the terrain elevation, if not present already
     pub fn set_height(&mut self, height: i16) {
-        self.height = Some(height)
+        if self.height.is_none() {
+            self.height = Some(height)
+        }
     }
 }
 
@@ -53,7 +56,7 @@ impl Terrain {
     fn get_cell_mut(&mut self, x: u32, y: u32) -> &mut TerrainCell {
         self.flat_data
             .get_mut(y as usize * self.width + x as usize)
-            .unwrap()
+            .unwrap_or_else(|| panic!("Trying to get Terrain[{x}, {y}]"))
     }
 
     pub fn get_color(&self, x: u32, y: u32) -> Option<Color> {
