@@ -1,6 +1,6 @@
 use crate::{
-    color::Color, mapblock::analyze_positions, mapblock::compute_mapblock, mapblock::CHUNK_SIZE,
-    terrain::Terrain, terrain::TerrainCell, config::Config,
+    color::Color, config::Config, mapblock::analyze_positions, mapblock::compute_mapblock,
+    mapblock::CHUNK_SIZE, terrain::Terrain, terrain::TerrainCell,
 };
 use async_std::task;
 use futures::future::join_all;
