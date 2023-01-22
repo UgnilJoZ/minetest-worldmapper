@@ -2,10 +2,10 @@ use crate::color::Color;
 use crate::mapblock::CHUNK_SIZE;
 use minetestworld::MAPBLOCK_LENGTH;
 
-#[derive(Default, Clone, Copy)]
+#[derive(Default, Clone, Copy, Debug)]
 pub struct TerrainCell {
     ground_color: Option<Color>,
-    height: Option<i16>,
+    pub height: Option<i16>,
 }
 
 impl TerrainCell {

@@ -60,7 +60,7 @@ where
     ))
 }
 
-pub(crate) fn compute_mapblock(
+pub fn compute_mapblock(
     mapblock: &MapBlock,
     config: &Config,
     base_height: i16,
