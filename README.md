@@ -2,7 +2,7 @@
 
 [![Build](https://github.com/UgnilJoZ/minetest-worldmapper/actions/workflows/rust.yaml/badge.svg)](https://github.com/UgnilJoZ/minetest-worldmapper/actions/workflows/rust.yaml)
 [![Crates.io](https://img.shields.io/crates/v/minetest-worldmapper.svg)](https://crates.io/crates/minetest-worldmapper)
-[![Dependency Status](https://deps.rs/crate/minetest-worldmapper/0.3.1/status.svg)](https://deps.rs/crate/minetest-worldmapper/0.3.1)
+[![Dependency Status](https://deps.rs/crate/minetest-worldmapper/0.3.2/status.svg)](https://deps.rs/crate/minetest-worldmapper/0.3.2)
 
 A multi-threaded mapper for Minetest with node transparency support.
 
@@ -11,8 +11,8 @@ It generates a view of the world from above, rendering one pixel per voxel.
 This project is currently tested on Linux only. If you have Windows and it doesn't work, please file a [bug report](https://github.com/UgnilJoZ/minetest-worldmapper/issues). But if you have another OS and it does not work, please report also a bug.
 
 ## [Example picture](https://github.com/UgnilJoZ/minetest-worldmapper/wiki/Images)
-![Zoomed in](https://user-images.githubusercontent.com/7910828/213735727-8a414eaa-9f0b-4fa6-be28-72ef843db08a.png)
-![Big map](https://user-images.githubusercontent.com/7910828/213735504-565507f6-1140-4ebd-904f-2f37a3d1a1db.png)
+![Zoomed map](https://user-images.githubusercontent.com/7910828/213939971-6e568b96-6ae3-4ea3-8176-1a4b93655265.png)
+![Example map](https://user-images.githubusercontent.com/7910828/213940057-c38e87b1-f44f-47d7-891e-62ea715ab226.png)
 
 ## Usage
 First, compile the project with cargo:
