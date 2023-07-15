@@ -18,7 +18,7 @@ toml = "0.7"
 serde_derive = "1.0"
 serde = "1.0"
 log = "0.4"
-pretty_env_logger = "0.4"
+pretty_env_logger = "0.5"
 log_err = "1.1"
 thiserror = "1.0"
 
