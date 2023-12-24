@@ -2,7 +2,7 @@
 
 [![Build](https://github.com/UgnilJoZ/minetest-worldmapper/actions/workflows/rust.yaml/badge.svg)](https://github.com/UgnilJoZ/minetest-worldmapper/actions/workflows/rust.yaml)
 [![Crates.io](https://img.shields.io/crates/v/minetest-worldmapper.svg)](https://crates.io/crates/minetest-worldmapper)
-[![Dependency Status](https://deps.rs/crate/minetest-worldmapper/0.3.3/status.svg)](https://deps.rs/crate/minetest-worldmapper/0.3.3)
+[![Dependency Status](https://deps.rs/crate/minetest-worldmapper/0.3.4/status.svg)](https://deps.rs/crate/minetest-worldmapper/0.3.4)
 
 A multi-threaded mapper for Minetest with node transparency support.
 
