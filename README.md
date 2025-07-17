@@ -2,17 +2,18 @@
 
 [![Build](https://github.com/UgnilJoZ/minetest-worldmapper/actions/workflows/rust.yaml/badge.svg)](https://github.com/UgnilJoZ/minetest-worldmapper/actions/workflows/rust.yaml)
 [![Crates.io](https://img.shields.io/crates/v/minetest-worldmapper.svg)](https://crates.io/crates/minetest-worldmapper)
-[![Dependency Status](https://deps.rs/crate/minetest-worldmapper/0.3.4/status.svg)](https://deps.rs/crate/minetest-worldmapper/0.3.4)
+[![Dependency Status](https://deps.rs/crate/minetest-worldmapper/0.3.5/status.svg)](https://deps.rs/crate/minetest-worldmapper/0.3.5)
 
-A multi-threaded mapper for Minetest with node transparency support.
+A multi-threaded mapper for [Luanti](https://www.luanti.org/) with voxel transparency support.
 
 It generates a view of the world from above, rendering one pixel per voxel.
 
-This project is currently tested on Linux only. If you have Windows and it doesn't work, please file a [bug report](https://github.com/UgnilJoZ/minetest-worldmapper/issues). But if you have another OS and it does not work, please report also a bug.
+This project is currently tested on Linux only. If you use Windows and it doesn't work, please file a [bug report](https://github.com/UgnilJoZ/minetest-worldmapper/issues). But if you use another OS and it does not work, please report also a bug.
 
 ## [Example picture](https://github.com/UgnilJoZ/minetest-worldmapper/wiki/Images)
-![Zoomed map](https://user-images.githubusercontent.com/7910828/213939971-6e568b96-6ae3-4ea3-8176-1a4b93655265.png)
 ![Example map](https://user-images.githubusercontent.com/7910828/213940057-c38e87b1-f44f-47d7-891e-62ea715ab226.png)
+A cutout to demonstrate the transparency feature:
+![Zoomed map](https://user-images.githubusercontent.com/7910828/213939971-6e568b96-6ae3-4ea3-8176-1a4b93655265.png)
 
 ## Usage
 First, compile the project with cargo:
@@ -64,18 +65,18 @@ background_color = "888888"
 "default:water_source" = "00228888"
 ```
 
-## Current limitations
+## Limitations
 * LevelDB is not supported as backend.
 * Only map chunks with map format version 29 (the current) are supported.
 
 
-## Reading Minetest worlds with Rust
+## Reading Luanti worlds with Rust
 The crate [minetestworld](https://github.com/UgnilJoZ/rust-minetestworld/) is the basis for this renderer.
 
 [1]: #config-file
 [2]: https://github.com/UgnilJoZ/minetest-worldmapper/blob/main/config.example.toml
-[3]: https://toml.io/en/v1.0.0#integer
+[3]: https://toml.io/en/v1.0.0#boolean
 [4]: https://toml.io/en/v1.0.0#string
 [5]: https://toml.io/en/v1.0.0#table
-[6]: https://toml.io/en/v1.0.0#boolean
+[6]: https://toml.io/en/v1.0.0#integer
 [7]: https://wiki.minetest.net/Itemstrings
