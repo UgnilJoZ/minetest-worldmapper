@@ -2,7 +2,6 @@ use crate::{
     color::Color, config::Config, mapblock::analyze_positions, mapblock::compute_mapblock,
     mapblock::CHUNK_SIZE, terrain::Terrain, terrain::TerrainCell,
 };
-use async_std::task;
 use futures::future::join_all;
 use image::RgbaImage;
 use minetestworld::MAPBLOCK_LENGTH;
@@ -10,6 +9,7 @@ use minetestworld::{MapData, Position};
 use std::collections::BinaryHeap;
 use std::error::Error;
 use std::sync::Arc;
+use tokio::task;
 
 async fn generate_terrain_chunk(
     config: Arc<Config>,
@@ -58,10 +58,15 @@ pub async fn compute_terrain(map: MapData, config: &Config) -> Result<Terrain, B
     .await;
 
     log::info!("Finishing surface map");
-    for (x, z, chunk) in chunks.drain(..) {
-        let offset_x = (base_offset.0 + MAPBLOCK_LENGTH as i16 * x) as u32;
-        let offset_z = (base_offset.1 - MAPBLOCK_LENGTH as i16 * (z + 1)) as u32;
-        terrain.insert_chunk((offset_x, offset_z), chunk)
+    for chunk in chunks.drain(..) {
+        match chunk {
+            Ok((x, z, chunk)) => {
+                let offset_x = (base_offset.0 + MAPBLOCK_LENGTH as i16 * x) as u32;
+                let offset_z = (base_offset.1 - MAPBLOCK_LENGTH as i16 * (z + 1)) as u32;
+                terrain.insert_chunk((offset_x, offset_z), chunk)
+            }
+            Err(e) => log::error!("Error generating terrain map: {e}"),
+        }
     }
     Ok(terrain)
 }

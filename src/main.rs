@@ -1,8 +1,8 @@
-use async_std::fs;
-use async_std::path::PathBuf;
 use clap::Parser;
 use log_err::LogErrResult;
 use minetestworld::World;
+use std::path::PathBuf;
+use tokio::fs;
 
 mod color;
 mod mapblock;
@@ -29,7 +29,7 @@ struct Args {
     output: PathBuf,
 }
 
-#[async_std::main]
+#[tokio::main(flavor = "multi_thread")]
 async fn main() {
     pretty_env_logger::init();
     let args = Args::parse();
