@@ -1,16 +1,17 @@
 [package]
 name = "minetest-worldmapper"
-version = "0.3.5"
+version = "0.3.6"
 edition = "2021"
 authors = ["Jan Ole Zabel <jan.zabel@posteo.de>"]
 repository = "https://github.com/UgnilJoZ/minetest-worldmapper"
 license = "AGPL-3.0"
 description = "Minetest world mapper"
-
+categories = ["command-line-utilities", "games", "multimedia::images", "rendering"]
+keywords = ["luanti"]
 
 [dependencies]
-minetestworld = "0.6.0"
-tokio = { version = "1", features = ["rt-multi-thread", "io-util", "fs", "macros"] }
+minetestworld = "0.6.1"
+tokio = { version = "1.47.1", features = ["rt-multi-thread", "io-util", "fs", "macros"] }
 futures = "0.3"
 clap = {version = "4.5.41", features = ["derive"]}
 image = {version = "0.25", default-features = false}

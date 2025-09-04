@@ -28,6 +28,7 @@ min_alpha = 128
 "default:acacia_tree" = "996633"
 "default:dry_shrub" = "772200aa"
 "default:pine_needles" = "008822"
+"default:dirt_with_coniferous_litter" = "444423"
 "default:snowblock" = "e8e8ff"
 "default:permafrost_with_stones" = "555555"
 "default:permafrost_with_moss" = "2acc66"
