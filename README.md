@@ -2,7 +2,7 @@
 
 [![Build](https://github.com/UgnilJoZ/minetest-worldmapper/actions/workflows/rust.yaml/badge.svg)](https://github.com/UgnilJoZ/minetest-worldmapper/actions/workflows/rust.yaml)
 [![Crates.io](https://img.shields.io/crates/v/minetest-worldmapper.svg)](https://crates.io/crates/minetest-worldmapper)
-[![Dependency Status](https://deps.rs/crate/minetest-worldmapper/0.3.5/status.svg)](https://deps.rs/crate/minetest-worldmapper/0.3.5)
+[![Dependency Status](https://deps.rs/crate/minetest-worldmapper/0.3.7/status.svg)](https://deps.rs/crate/minetest-worldmapper/0.3.7)
 
 A multi-threaded mapper for [Luanti](https://www.luanti.org/) with voxel transparency support.
 
@@ -66,7 +66,6 @@ background_color = "888888"
 ```
 
 ## Limitations
-* LevelDB is not supported as backend.
 * Only map chunks with map format version 29 (the current) are supported.
 
 
